@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charger un fichier</title>
+    {% block additional_css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% endblock %}
+</head>
+<body>
+
+    <header>
+        <h1>Charger un fichier CSV</h1>
+    </header>
+
+    <div id="header-buttons">
+        <button onclick="location.href='/'" class="header-button logout">Se déconnecter</button>
+    </div>
+
+    <div class="container">
+        <form action="{{ url_for('load') }}" method="post" enctype="multipart/form-data">
+            <div class="file-upload">
+                <label for="fileInput">Choisir un fichier :</label>
+                <input id="fileInput" type="file" name="file" accept=".csv" required>
+            </div>
+            <button type="submit">Charger</button>
+        </form>
+    </div>
+
+</body>
+</html>

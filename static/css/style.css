@@ -1,0 +1,386 @@
+/* Style global */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #d9534f;
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+/* Conteneur de Formulaire */
+.form-container, .container form {
+    max-width: 450px; /* Limite la largeur du formulaire */
+    margin: auto; /* Centre le formulaire */
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Groupes d'input */
+.input-group {
+    margin-bottom: 20px;
+}
+
+/* Style des labels */
+.label_style {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 6px;
+    margin-top: 3px;
+    display: block;
+    font-weight: bold;
+}
+
+/* Style des champs de texte (inputs) */
+.rectangle {
+    width: 95%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fafafa;
+    font-size: 1em;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.rectangle:focus {
+    border-color: #d9534f;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Style des boutons */
+.button_style {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1em;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button_style:hover {
+    background-color: #c9302c;
+    transform: translateY(-3px);
+}
+
+.button_style:active {
+    transform: translateY(0);
+}
+
+/* Upload de fichier */
+.file-upload {
+    margin-bottom: 20px;
+}
+
+.file-upload label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.file-upload input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fafafa;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.file-upload input:focus {
+    border-color: #d9534f;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Style des boutons (chargement) */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #c9302c;
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Style des tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #d9534f;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Conteneur des filtres */
+#filters-container {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 650px;
+}
+
+#filters-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #555;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+#filters-container label {
+    font-size: 0.9em;
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+#filters-container select, #filters-container input {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+/* Filtres d'ID */
+.id-filters {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+}
+
+.id-filter-item {
+    flex: 1;
+}
+
+/* Responsive (sur petits écrans) */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    .id-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Notifications Flash (alertes success/error) */
+.flashes {
+    margin: 20px 0;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.alert-success {
+    background-color: #d4edda; /* Vert clair */
+    color: #155724; /* Texte vert foncé */
+}
+
+.alert-error {
+    background-color: #f8d7da; /* Rouge clair */
+    color: #721c24; /* Texte rouge foncé */
+}
+
+/* Boutons sous le header */
+#header-buttons {
+    display: flex;
+    justify-content: center; /* Centre les boutons */
+    gap: 10px; /* Espacement entre les boutons */
+    margin-top: 20px;
+}
+
+/* Style des boutons dans le header */
+.header-button {
+    height: 40px; /* Ajuster la hauteur du bouton */
+    width: 310px; /* Ajuster la largeur du bouton */
+    font-size: 1em; /* Taille de la police réduite */
+    color: black; /* Texte en noir */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Léger effet d'ombre */
+}
+
+/* Bouton Charger un fichier */
+.header-button.upload {
+    background-color: #a34441;
+    color: white
+}
+
+.header-button.upload:hover {
+    background-color: #a35b58;
+    transform: translateY(-2px);
+}
+
+/* Bouton Se déconnecter */
+.header-button.logout {
+    background-color: #a34441;
+    color: white
+}
+
+.header-button.logout:hover {
+    background-color: #a35b58;
+    transform: translateY(-2px);
+}
+
+/* Responsive : alignement en colonne sur petits écrans */
+@media (max-width: 600px) {
+    #header-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .header-button {
+        width: 100%; /* Boutons prennent toute la largeur sur mobile */
+    }
+}
+
+/* Récapitulatif des informations */
+#recap-container {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 650px;
+    text-align: left;
+}
+
+#recap-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+#recap-container p {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#fraudesParType {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+#fraudesParType li {
+    font-size: 1em;
+    color: #666;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    transition: background 0.3s ease;
+}
+
+#totalFraudes { 
+    color: #a34441;
+    font-weight: bold;
+}
+
+#fraudesParType li:hover {
+    background: #f1f1f1;
+}
+
+/* Container principal avec filtres et récapitulatif */
+#main-container {
+    display: flex;
+    gap: 5px;
+    justify-content: center; /* Centre horizontalement */
+}
+
+#filters-container, #recap-container {
+    flex: 1;
+    margin: 0; /* Supprime toute marge externe */
+    padding: 10px; /* Ajuste si nécessaire */
+    margin-top: 5px;
+}
+
+#chart-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0;
+}
+
+/* Responsive : affichage en colonne sur petit écran */
+@media (max-width: 768px) {
+    #main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #filters-container, #recap-container {
+        width: 100%;
+        max-width: 650px;
+    }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"> 
+    {% block additional_css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% endblock %}
+</head>
+
+<body>
+
+    <header>
+        <h1>Connexion</h1>
+    </header>
+
+    <!-- Affichage des messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flashes">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <main>
+        <div class="form-container">
+            <form action="/" method="post" id="forme">
+                <div class="input-group">
+                    <label for="email" class="label_style">Email :</label>
+                    <input type="email" id="email" name="email" required class="rectangle">
+                </div>
+
+                <div class="input-group">
+                    <label for="password" class="label_style">Mot de passe :</label>
+                    <input type="password" id="password" name="password" required class="rectangle">
+                </div>
+
+                <button type="submit" class="button_style">Se connecter</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prédictions</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    {% block additional_css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <header>
+        <h1>Résultat de la prédiction</h1>
+    </header>
+
+    <div id="header-buttons">
+        <button onclick="location.href='/load'" class="header-button upload">Charger un nouveau fichier</button>
+        <button onclick="location.href='/'" class="header-button logout">Se déconnecter</button>
+    </div>
+
+    <div id="main-container">
+        <!-- Filtres -->
+        <div id="filters-container">
+            <h1>Filtres</h1>
+
+            <label for="fraudeFilter">Fraude :</label>
+            <select id="fraudeFilter">
+                <option value="">Tous</option>
+                <option value='Oui'>Oui</option>
+                <option value='Non'>Non</option>
+            </select>
+
+            <label for="typeFilter">Type :</label>
+            <select id="typeFilter">
+                <option value="">Tous</option>
+                {% for type in types %}
+                    <option value="{{ type }}">{{ type }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="amountFilter">Montant :</label>
+            <select id="amountFilter">
+                <option value="">Tous</option>
+                <option value="0-1000">0 - 1,000</option>
+                <option value="1000-10000">1,000 - 10,000</option>
+                <option value="10000-50000">10,000 - 50,000</option>
+                <option value="50000-100000">50,000 - 100,000</option>
+                <option value="100000-1000000">100,000 - 1,000,000</option>
+                <option value="1000000-">> 1,000,000</option>
+            </select>
+
+            <div class="id-filters">
+                <div class="id-filter-item">
+                    <label for="originFilter">ID origine :</label>
+                    <input type="text" id="originFilter" placeholder="Entrez l'ID d'origine">
+                </div>
+
+                <div class="id-filter-item">
+                    <label for="destFilter">ID destinataire :</label>
+                    <input type="text" id="destFilter" placeholder="Entrez l'ID du destinataire">
+                </div>
+            </div>
+        </div>
+
+        <!-- Récapitulatif -->
+        <div id="filters-container">
+            <h1>Récapitulatif</h1>
+            <p><strong>Nombre total de transactions susceptibles d'être des fraudes :</strong> <span id="totalFraudes">{{ nombre_fraudes }}</span> / {{ data|length }}</p>
+            <p><strong>Fraudes détectées par type :</strong></p>
+            
+            <!-- Graphique pour les fraudes par type -->
+            <canvas id="fraudesParTypeChart" width="500" height="150"></canvas>
+        </div>
+    </div>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>N° de transaction</th>
+                <th>Etape</th>
+                <th>Type</th>
+                <th>Montant</th>
+                <th>Id origine</th>
+                <th>Id destinataire</th>
+                <th>Suspicion fraude</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.id_trans }}</td>
+                <td>{{ row.etape }}</td>
+                <td>{{ row.type }}</td>
+                <td>{{ row.montant }}</td>
+                <td>{{ row.id_orig }}</td>
+                <td>{{ row.id_dest }}</td>
+                <td>{{ 'Non' if row.fraude_pred == 0 else 'Oui' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Données pour le graphique des fraudes par type
+        const fraudesParType = {{ fraudes_par_type|tojson }};
+        
+        const labels = Object.keys(fraudesParType);
+        const data = Object.values(fraudesParType);
+    
+        const ctx = document.getElementById('fraudesParTypeChart').getContext('2d');
+        const fraudesChart = new Chart(ctx, {
+            type: 'bar', // Type du graphique (barres)
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Nombre de fraudes par type',
+                    data: data,
+                    backgroundColor: '#666',
+                    borderColor: '#666',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    
+        // Initialisation de DataTables
+        $(document).ready(function() {
+            var table = $('#dataTable').DataTable();
+
+            // Filtrer par "Fraude" ou "Non fraude"
+            $('#fraudeFilter').on('change', function() {
+                table.column(6).search(this.value).draw();
+            });
+
+            // Filtrer par type
+            $('#typeFilter').on('change', function() {
+                table.column(2).search(this.value).draw();
+            });
+
+            // Filtrer par montant
+            $('#amountFilter').on('change', function() {
+                var value = this.value;
+                var minAmount = 0, maxAmount = Infinity;
+
+                // Réinitialiser les filtres personnalisés
+                $.fn.dataTable.ext.search = [];
+
+                if (value) {
+                    var range = value.split('-');
+                    if (range.length === 2) {
+                        minAmount = parseFloat(range[0]);
+                        maxAmount = parseFloat(range[1]);
+                    } else if (value === "1000000-") {
+                        minAmount = 1000000;
+                        maxAmount = Infinity; // Si > 1,000,000
+                    }
+                }
+
+                // Appliquer un filtre personnalisé pour la colonne "Montant"
+                $.fn.dataTable.ext.search.push(
+                    function(settings, data, dataIndex) {
+                        var montant = parseFloat(data[3]); // La colonne Montant (index 3)
+                        return (montant >= minAmount && montant <= maxAmount);
+                    }
+                );
+
+                table.draw();
+            });
+
+            // Filtrer par ID origine
+            $('#originFilter').on('keyup', function() {
+                table.column(4).search(this.value).draw();
+            });
+
+            // Filtrer par ID destinataire
+            $('#destFilter').on('keyup', function() {
+                table.column(5).search(this.value).draw();
+            });
+        });
+
+    </script>
+    
+</body>
+</html>
